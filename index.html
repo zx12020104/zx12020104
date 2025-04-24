@@ -99,6 +99,64 @@
 
     <!-- 问答系统 -->
     <div id="qa" class="page container mt-4">
+        <h2>问答系统</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3>常见问题</h3>
+                <div id="question-list">
+                    <div class="question-item mb-3">
+                        <h4>如何开始学习课程？</h4>
+                        <p>点击课程卡片上的"开始学习"按钮即可</p>
+                    </div>
+                    <div class="question-item mb-3">
+                        <h4>如何提问？</h4>
+                        <p>登录后可在问答页面提交问题</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="showPage('question-form')">提问</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提问表单 -->
+    <div id="question-form" class="page container mt-4">
+        <h2>提问</h2>
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">问题标题</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">问题详情</label>
+                        <textarea class="form-control" rows="5"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="showPage('qa')">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 课程详情 -->
+    <div id="course-detail" class="page container mt-4">
+        <h2>课程详情</h2>
+        <div class="card">
+            <div class="card-body">
+                <h3 id="course-title">Python编程</h3>
+                <p id="course-description">学习Python基础语法和高级特性</p>
+                <div class="lessons">
+                    <h4>课程章节</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">第一章：Python基础</li>
+                        <li class="list-group-item">第二章：函数与模块</li>
+                        <li class="list-group-item">第三章：面向对象编程</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary mt-3" onclick="showPage('courses')">返回课程列表</button>
+            </div>
+        </div>
+    </div>
 
     <!-- 个人中心 -->
     <div id="profile" class="page container mt-4">
@@ -131,9 +189,28 @@
 
         // 模拟课程数据
         const courses = [
-            {id: 1, title: "Python编程", description: "学习Python基础语法"},
-            {id: 2, title: "Web开发", description: "Django框架实战"}
+            {id: 1, title: "Python编程", description: "学习Python基础语法和高级特性", 
+             lessons: ["第一章：Python基础", "第二章：函数与模块", "第三章：面向对象编程"]},
+            {id: 2, title: "Web开发", description: "Django框架实战",
+             lessons: ["第一章：Django基础", "第二章：模型与数据库", "第三章：视图与模板"]}
         ];
+
+        // 显示课程详情
+        function showCourseDetail(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (course) {
+                document.getElementById('course-title').textContent = course.title;
+                document.getElementById('course-description').textContent = course.description;
+                
+                const lessonsList = document.querySelector('.lessons .list-group');
+                lessonsList.innerHTML = '';
+                course.lessons.forEach(lesson => {
+                    lessonsList.innerHTML += `<li class="list-group-item">${lesson}</li>`;
+                });
+                
+                showPage('course-detail');
+            }
+        }
 
         // 加载课程列表
         function loadCourses() {
@@ -144,7 +221,11 @@
                         <div class="course-card">
                             <h3>${course.title}</h3>
                             <p>${course.description}</p>
-                            <button class="btn btn-sm btn-outline-primary" 
+                            <button class="btn btn-sm btn-outline-primary me-2" 
+                                onclick="showCourseDetail(${course.id})">
+                                查看详情
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" 
                                 onclick="alert('开始学习${course.title}')">
                                 开始学习
                             </button>
