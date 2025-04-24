@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能教育平台</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        /* 页面切换样式 */
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* 模拟Django模板效果 */
+        .course-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showPage('home')">智能教育平台</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('courses')">课程中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('qa')">问答系统</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showPage('profile')">个人中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showLogin()">登录</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 登录弹窗 -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户登录</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">用户名</label>
+                            <input type="text" class="form-control" id="username">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">密码</label>
+                            <input type="password" class="form-control" id="password">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="login()">登录</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 首页内容 -->
+    <div id="home" class="page active container mt-4">
+        <h1>欢迎来到智能教育平台</h1>
+        <p>这是一个在线学习平台</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">课程学习</h5>
+                        <p class="card-text">点击进入课程中心开始学习</p>
+                        <a href="#" class="btn btn-primary" onclick="showPage('courses')">进入</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 课程中心 -->
+    <div id="courses" class="page container mt-4">
+        <h2>课程中心</h2>
+        <div class="row" id="course-list">
+            <!-- 课程将通过JS动态加载 -->
+        </div>
+    </div>
+
+    <!-- 问答系统 -->
+    <div id="qa" class="page container mt-4">
+
+    <!-- 个人中心 -->
+    <div id="profile" class="page container mt-4">
+        <h2>个人中心</h2>
+        <div class="card">
+            <div class="card-body">
+                <h3 id="profile-username">未登录用户</h3>
+                <div id="profile-content">
+                    <p>请先登录查看个人信息</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <h2>问答系统</h2>
+        <div id="question-list">
+            <!-- 问题将通过JS动态加载 -->
+        </div>
+    </div>
+
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/qa.js"></script>
+    <script>
+        // 页面切换功能
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // 模拟课程数据
+        const courses = [
+            {id: 1, title: "Python编程", description: "学习Python基础语法"},
+            {id: 2, title: "Web开发", description: "Django框架实战"}
+        ];
+
+        // 加载课程列表
+        function loadCourses() {
+            const container = document.getElementById('course-list');
+            courses.forEach(course => {
+                container.innerHTML += `
+                    <div class="col-md-4">
+                        <div class="course-card">
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                            <button class="btn btn-sm btn-outline-primary" 
+                                onclick="alert('开始学习${course.title}')">
+                                开始学习
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 用户登录功能
+        let currentUser = null;
+        
+        function showLogin() {
+            new bootstrap.Modal(document.getElementById('loginModal')).show();
+        }
+        
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 模拟登录验证
+            if(username && password) {
+                currentUser = {
+                    username: username,
+                    joinDate: new Date().toLocaleDateString()
+                };
+                updateProfile();
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                alert('登录成功');
+            } else {
+                alert('请输入用户名和密码');
+            }
+        }
+        
+        function updateProfile() {
+            if(currentUser) {
+                document.getElementById('profile-username').textContent = currentUser.username;
+                document.getElementById('profile-content').innerHTML = `
+                    <p>注册日期: ${currentUser.joinDate}</p>
+                    <button class="btn btn-danger" onclick="logout()">退出登录</button>
+                `;
+            }
+        }
+        
+        function logout() {
+            currentUser = null;
+            document.getElementById('profile-username').textContent = '未登录用户';
+            document.getElementById('profile-content').innerHTML = `
+                <p>请先登录查看个人信息</p>
+            `;
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            loadCourses();
+            // 可以添加更多初始化逻辑
+        };
+    </script>
+</body>
+</html>

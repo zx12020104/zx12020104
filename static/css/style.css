@@ -1,0 +1,64 @@
+/* 全局墨绿色主题 */
+.navbar {
+    background-color: #2E8B57;
+    border-bottom: 2px solid #1E5631;
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+}
+
+.btn-primary {
+    background-color: #2E8B57;
+    border-color: #1E5631;
+}
+
+.btn-primary:hover {
+    background-color: #1E5631;
+    border-color: #1A4B27;
+}
+
+.card-header {
+    background-color: #2E8B57;
+    color: white;
+}
+
+/* AI回答框样式 */
+.ai-answer-box {
+    border: 1px solid #1E5631;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    background-color: #E0F0E4;
+}
+
+.ai-answer-header {
+    background-color: #2E8B57;
+    padding: 12px 15px;
+    border-bottom: 1px solid #1E5631;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.ai-answer-header i {
+    color: white;
+    font-size: 18px;
+}
+
+.ai-answer-body {
+    padding: 15px;
+    background-color: white;
+    white-space: pre-line;
+    word-break: break-word;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* 其他全局样式 */
+body {
+    background-color: #E8F3E8;
+}
